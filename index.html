@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+    <title>Inclusive Puzzle - Jogo Acessível</title>
+    <meta name="description" content="Um jogo de quebra-cabeça acessível com comandos de voz e suporte a leitor de tela.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              access: {
+                yellow: '#FFFF00',
+                black: '#000000',
+                white: '#FFFFFF',
+                blue: '#003366',
+              }
+            },
+            animation: {
+              'fade-in': 'fadeIn 0.5s ease-out',
+            },
+            keyframes: {
+              fadeIn: {
+                '0%': { opacity: '0' },
+                '100%': { opacity: '1' },
+              }
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+      /* High Contrast Utilities */
+      .high-contrast {
+        background-color: #000000 !important;
+        color: #FFFF00 !important;
+      }
+      .high-contrast button {
+        border: 2px solid #FFFF00 !important;
+        background-color: #000000 !important;
+        color: #FFFF00 !important;
+      }
+      .high-contrast .tile-number {
+        background-color: #000000 !important;
+        color: #FFFF00 !important;
+        font-weight: bold !important;
+      }
+      /* Focus Styles for Accessibility */
+      *:focus-visible {
+        outline: 4px solid #3b82f6;
+        outline-offset: 2px;
+      }
+      .high-contrast *:focus-visible {
+        outline: 4px solid #FFFF00;
+        outline-offset: 4px;
+      }
+      
+      /* Error Shake Animation */
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+        20%, 40%, 60%, 80% { transform: translateX(5px); }
+      }
+      .animate-shake {
+        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "@google/genai": "https://esm.sh/@google/genai@^1.40.0",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/"
+  }
+}
+</script>
+<link rel="stylesheet" href="/index.css">
+</head>
+  <body>
+    <div id="root"></div>
+
+    <!-- VLibras Widget -->
+    <div vw class="enabled">
+      <div vw-access-button class="active"></div>
+      <div vw-plugin-wrapper>
+        <div class="vw-plugin-top-wrapper"></div>
+      </div>
+    </div>
+    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+    <script>
+      new window.VLibras.Widget('https://vlibras.gov.br/app');
+    </script>
+  <script type="module" src="/index.tsx"></script>
+</body>
+</html>

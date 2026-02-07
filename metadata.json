@@ -1,0 +1,7 @@
+{
+  "name": "Inclusive Puzzle",
+  "description": "An accessible sliding puzzle game designed for everyone, featuring screen reader support, voice control, high contrast modes, and adaptive difficulty.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
