@@ -1,72 +1,130 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
-    <title>Inclusive Puzzle - Jogo Acessível</title>
-    <meta name="description" content="Um jogo de quebra-cabeça acessível com comandos de voz e suporte a leitor de tela.">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-      tailwind.config = {
-        theme: {
-          extend: {
-            colors: {
-              access: {
-                yellow: '#FFFF00',
-                black: '#000000',
-                white: '#FFFFFF',
-                blue: '#003366',
-              }
-            },
-            animation: {
-              'fade-in': 'fadeIn 0.5s ease-out',
-            },
-            keyframes: {
-              fadeIn: {
-                '0%': { opacity: '0' },
-                '100%': { opacity: '1' },
-              }
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5" />
+  <title>Inclusive Puzzle - Jogo Acessível</title>
+  <meta name="description" content="Um jogo de quebra-cabeça acessível com comandos de voz e suporte a leitor de tela.">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            access: {
+              yellow: '#FFFF00',
+              black: '#000000',
+              white: '#FFFFFF',
+              blue: '#003366',
+            }
+          },
+          animation: {
+            'fade-in': 'fadeIn 0.5s ease-out',
+          },
+          keyframes: {
+            fadeIn: {
+              '0%': { opacity: '0' },
+              '100%': { opacity: '1' },
             }
           }
         }
       }
-    </script>
-    <style>
-      /* High Contrast Utilities */
-      .high-contrast {
-        background-color: #000000 !important;
-        color: #FFFF00 !important;
+    }
+  </script>
+  <style>
+    /* High Contrast Utilities */
+    .high-contrast {
+      background-color: #000000 !important;
+      color: #FFFF00 !important;
+    }
+
+    .high-contrast button {
+      border: 2px solid #FFFF00 !important;
+      background-color: #000000 !important;
+      color: #FFFF00 !important;
+    }
+
+    .high-contrast .tile-number {
+      background-color: #000000 !important;
+      color: #FFFF00 !important;
+      font-weight: bold !important;
+    }
+
+    /* Focus Styles for Accessibility */
+    *:focus-visible {
+      outline: 4px solid #3b82f6;
+      outline-offset: 2px;
+    }
+
+    .high-contrast *:focus-visible {
+      outline: 4px solid #FFFF00;
+      outline-offset: 4px;
+    }
+
+    /* Error Shake Animation */
+    @keyframes shake {
+
+      0%,
+      100% {
+        transform: translateX(0);
       }
-      .high-contrast button {
-        border: 2px solid #FFFF00 !important;
-        background-color: #000000 !important;
-        color: #FFFF00 !important;
+
+      10%,
+      30%,
+      50%,
+      70%,
+      90% {
+        transform: translateX(-5px);
       }
-      .high-contrast .tile-number {
-        background-color: #000000 !important;
-        color: #FFFF00 !important;
-        font-weight: bold !important;
+
+      20%,
+      40%,
+      60%,
+      80% {
+        transform: translateX(5px);
       }
-      /* Focus Styles for Accessibility */
-      *:focus-visible {
-        outline: 4px solid #3b82f6;
-        outline-offset: 2px;
-      }
-      .high-contrast *:focus-visible {
-        outline: 4px solid #FFFF00;
-        outline-offset: 4px;
-      }
-      
-      /* Error Shake Animation */
-      @keyframes shake {
-        0%, 100% { transform: translateX(0); }
-        10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
-        20%, 40%, 60%, 80% { transform: translateX(5px); }
-      }
-      .animate-shake {
-        animation: shake 0.5s cubic-bezier(.36,.07,.19,.97) both;
-      }
-    </style>
+    }
+
+    .animate-shake {
+      animation: shake 0.5s cubic-bezier(.36, .07, .19, .97) both;
+    }
+
+    /* Avaliação Section Styles */
+    #avaliation {
+      text-align: center;
+      margin-top: 40px;
+      padding: 20px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      max-width: 800px;
+      width: 90%;
+    }
+
+    #avaliation h2 {
+      color: #0056b3;
+      margin-bottom: 10px;
+    }
+
+    #avaliation h3 {
+      font-weight: normal;
+      margin-bottom: 5px;
+    }
+
+    #avaliation h4 {
+      font-weight: normal;
+      font-style: italic;
+      color: #555;
+      margin-bottom: 15px;
+    }
+
+    #avaliation img {
+      border: 2px solid #ddd;
+      padding: 5px;
+      border-radius: 8px;
+    }
+  </style>
   <script type="importmap">
 {
   "imports": {
@@ -77,22 +135,31 @@
   }
 }
 </script>
-<link rel="stylesheet" href="/index.css">
+  <link rel="stylesheet" href="/index.css">
 </head>
-  <body>
-    <div id="root"></div>
 
-    <!-- VLibras Widget -->
-    <div vw class="enabled">
-      <div vw-access-button class="active"></div>
-      <div vw-plugin-wrapper>
-        <div class="vw-plugin-top-wrapper"></div>
-      </div>
+<body>
+  <div id="root"></div>
+
+  <!-- VLibras Widget -->
+  <div vw class="enabled">
+    <div vw-access-button class="active"></div>
+    <div vw-plugin-wrapper>
+      <div class="vw-plugin-top-wrapper"></div>
     </div>
-    <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
-    <script>
-      new window.VLibras.Widget('https://vlibras.gov.br/app');
-    </script>
+  </div>
+  <script src="https://vlibras.gov.br/app/vlibras-plugin.js"></script>
+  <script>
+    new window.VLibras.Widget('https://vlibras.gov.br/app');
+  </script>
   <script type="module" src="/index.tsx"></script>
+
+  <div id="avaliation" role="region" aria-live="polite">
+    <h2>Avalie o jogo</h2>
+    <h3>O que você achou do jogo?</h3>
+    <h4>Aponte a câmera para o qr-code</h4>
+    <img src="qrcode.png" alt="QR Code para avaliação do jogo" width="150" height="150">
+  </div>
 </body>
+
 </html>
