@@ -432,7 +432,7 @@ const App: React.FC = () => {
                <img 
                  src={imageUrl} 
                  alt="Imagem de referência: Como o quebra-cabeça deve ficar" 
-                 className="w-20 h-20 object-cover rounded border border-gray-300" 
+                 className="w-40 h-40 object-cover rounded border border-gray-300" 
                />
             </div>
 
