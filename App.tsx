@@ -496,10 +496,6 @@ const App: React.FC = () => {
 
         </div>
 
-        <footer className="mt-12 text-center text-sm opacity-60">
-          <p>Desenvolvido com foco em Design Universal e Acessibilidade (WCAG 2.1 AA).</p>
-        </footer>
-
       </div>
     </main>
   );

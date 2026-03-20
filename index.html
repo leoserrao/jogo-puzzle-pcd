@@ -92,19 +92,29 @@
 
     /* Avaliação Section Styles */
     #avaliation {
+      margin: 40px auto;
+      padding: 24px;
+      background: linear-gradient(135deg, #f5f9ff, #e8f0fe);
+      border: 2px solid #cfe1ff;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      max-width: 660px;
+      width: min(90%, 660px);
       text-align: center;
-      margin-top: 40px;
-      padding: 20px;
-      background-color: #fff;
-      border-radius: 8px;
-      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-      max-width: 800px;
-      width: 90%;
+      transition: transform .25s ease, box-shadow .25s ease, background .3s ease;
+    }
+
+    #avaliation:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 35px rgba(0, 0, 0, 0.2);
+      background: linear-gradient(135deg, #ebf4ff, #d8e8ff);
     }
 
     #avaliation h2 {
-      color: #0056b3;
-      margin-bottom: 10px;
+      color: #003f88;
+      margin-bottom: 12px;
+      font-size: 1.6rem;
+      letter-spacing: .02em;
     }
 
     #avaliation h3 {
@@ -120,9 +130,14 @@
     }
 
     #avaliation img {
+      display: block;
+      margin: 16px auto;
       border: 2px solid #ddd;
-      padding: 5px;
-      border-radius: 8px;
+      padding: 8px;
+      border-radius: 12px;
+      width: min(180px, 80%);
+      height: auto;
+      background-color: #fff;
     }
   </style>
   <script type="importmap">
@@ -160,6 +175,10 @@
     <h4>Aponte a câmera para o qr-code</h4>
     <img src="qrcode.png" alt="QR Code para avaliação do jogo" width="150" height="150">
   </div>
+
+  <footer aria-label="Informação de acessibilidade" style="text-align:center; margin-top:16px; font-size:0.9rem; color:#333;">
+    Desenvolvido com foco em Design Universal e Acessibilidade (WCAG 2.1 AA).
+  </footer>
 </body>
 
 </html>
