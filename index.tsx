@@ -12,10 +12,10 @@ if (!rootElement) {
 const root = ReactDOM.createRoot(rootElement);
 root.render(
   <React.StrictMode>
-    <AccessibilityProvider>
-      <AchievementProvider>
+    <AchievementProvider>
+      <AccessibilityProvider>
         <App />
-      </AchievementProvider>
-    </AccessibilityProvider>
+      </AccessibilityProvider>
+    </AchievementProvider>
   </React.StrictMode>
 );

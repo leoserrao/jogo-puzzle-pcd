@@ -61,11 +61,11 @@ const extractNumberFromCommand = (text: string): number | null => {
 const App: React.FC = () => {
   const [gridSize, setGridSize] = useState(3);
   const { tiles, isSolved, moveCount, imageUrl, moveTile, resetGame, initializeGame, lastMovedTileId, errorTileId } = useGameLogic(gridSize);
-  const { 
-    highContrast, 
-    voiceCommandsEnabled, 
-    ttsEnabled, 
-    speak, 
+  const {
+    highContrast,
+    voiceCommandsEnabled,
+    ttsEnabled,
+    speak,
     isSpeaking,
     toggleVoiceCommands,
     toggleTTS,
@@ -74,7 +74,7 @@ const App: React.FC = () => {
     decreaseFontSize
   } = useAccessibility();
   const { unlockAchievement, addToScore } = useAchievements();
-  
+
   const voiceServiceRef = useRef<VoiceService | null>(null);
   const [congratsMessage, setCongratsMessage] = useState<string | null>(null);
   const [pointsEarned, setPointsEarned] = useState<number>(0);
@@ -129,14 +129,14 @@ const App: React.FC = () => {
   useEffect(() => {
     if (isSolved) {
       unlockAchievement('first_win');
-      
+
       const timeTaken = (Date.now() - startTimeRef.current) / 1000; // seconds
       if (timeTaken < 60) {
         unlockAchievement('speedster');
       }
 
       if (gridSize === 2) unlockAchievement('grid_2x2'); // Keep 2x2 as basic completion badge
-      
+
       // Calculate Score:
       // Base: 100 * GridSize
       // Efficiency Bonus: (Allowable Moves - ActualMoves) * Multiplier
@@ -144,10 +144,10 @@ const App: React.FC = () => {
       const baseScore = gridSize * 100;
       const moveAllowance = gridSize * gridSize * 6;
       const efficiencyBonus = Math.max(0, moveAllowance - moveCount) * 10;
-      
+
       const totalPoints = baseScore + efficiencyBonus;
       setPointsEarned(totalPoints);
-      
+
       // Add to global score
       addToScore(totalPoints);
     }
@@ -169,18 +169,18 @@ const App: React.FC = () => {
     const handleGlobalKeys = (e: KeyboardEvent) => {
       // Ignore if user is typing in an input field (just in case we add one later)
       if (e.target instanceof HTMLInputElement || e.target instanceof HTMLTextAreaElement) return;
-      
+
       // Ignore if modifiers are pressed (except Shift which is needed for + on some layouts, though e.key handles the char)
       // We allow Shift, but block Ctrl/Alt/Meta to avoid overriding browser shortcuts like Ctrl+ (Zoom)
       if (e.ctrlKey || e.altKey || e.metaKey) return;
 
       const key = e.key.toLowerCase();
-      
+
       // Accessibility Toggles
       if (key === 'v') toggleVoiceCommands();
       if (key === 'n') toggleTTS();
       if (key === 'a') toggleHighContrast();
-      
+
       // Font Sizing
       if (e.key === '-') decreaseFontSize();
       if (e.key === '+') increaseFontSize();
@@ -218,11 +218,11 @@ const App: React.FC = () => {
   useEffect(() => {
     voiceServiceRef.current = new VoiceService((transcript) => {
       // Access latest state from ref
-      const { 
-        voiceCommandsEnabled: enabled, 
-        tiles: currentTiles, 
-        moveTile: currentMoveTile, 
-        resetGame: currentResetGame, 
+      const {
+        voiceCommandsEnabled: enabled,
+        tiles: currentTiles,
+        moveTile: currentMoveTile,
+        resetGame: currentResetGame,
         speak: currentSpeak,
         unlockAchievement: currentUnlock,
         isConfirmingReset: currentIsConfirmingReset,
@@ -234,7 +234,7 @@ const App: React.FC = () => {
 
       // We removed the strict speaking check to prevent blocking legitimate commands.
       // If the user speaks while the app is speaking, we prioritize the user command.
-      
+
       const lower = transcript.toLowerCase();
       console.log('Voice Command:', lower);
 
@@ -268,7 +268,7 @@ const App: React.FC = () => {
       // Expanded regex to catch variants like "Mova", "Movimente", "Escolha"
       const isSelectCommand = /selecion(ar|e|a)|foc(ar|o)|escolh(er|a)/i.test(lower);
       const isMoveCommand = /mov(er|a|imente)|peça|número|andar/i.test(lower);
-      
+
       const num = extractNumberFromCommand(lower);
 
       if (num !== null) {
@@ -277,7 +277,7 @@ const App: React.FC = () => {
         const exists = currentTiles.some(t => t.id === targetId);
 
         if (exists) {
-          currentUnlock('access_voice'); 
+          currentUnlock('access_voice');
 
           if (isSelectCommand) {
             // "Selecionar X" -> ONLY Focus, do NOT move.
@@ -290,7 +290,7 @@ const App: React.FC = () => {
             // "Mover X" or implicitly just "X" -> Move
             const success = currentMoveTile(targetId);
             if (!success) {
-               triggerErrorAnimation(); 
+              triggerErrorAnimation();
             }
           }
         } else {
@@ -326,8 +326,8 @@ const App: React.FC = () => {
         try {
           const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
           const response = await ai.models.generateContent({
-             model: 'gemini-3-flash-preview',
-             contents: "Write a short, encouraging, 1-sentence congratulation message in Portuguese for someone who just finished a puzzle.",
+            model: 'gemini-3-flash-preview',
+            contents: "Write a short, encouraging, 1-sentence congratulation message in Portuguese for someone who just finished a puzzle.",
           });
           setCongratsMessage(response.text);
           speak(response.text + ` Você ganhou ${pointsEarned} pontos.`);
@@ -339,10 +339,10 @@ const App: React.FC = () => {
       };
       fetchCongrats();
     } else if (isSolved) {
-        setCongratsMessage("Parabéns! Quebra-cabeça concluído!");
-        speak(`Parabéns! Quebra-cabeça concluído! Você ganhou ${pointsEarned} pontos.`);
+      setCongratsMessage("Parabéns! Quebra-cabeça concluído!");
+      speak(`Parabéns! Quebra-cabeça concluído! Você ganhou ${pointsEarned} pontos.`);
     } else {
-        setCongratsMessage(null);
+      setCongratsMessage(null);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isSolved, pointsEarned]); // Add pointsEarned to dependency to ensure it speaks the score
@@ -351,16 +351,16 @@ const App: React.FC = () => {
   const handleKeyDown = (e: React.KeyboardEvent) => {
     // Only handle if inside the grid and not modifying key
     if (e.ctrlKey || e.altKey || e.metaKey) return;
-    
+
     // Check if focus is on a tile
     const activeElement = document.activeElement as HTMLElement;
     const isTile = activeElement?.getAttribute('data-row') !== null;
-    
+
     if (!isTile) return;
 
     const currentRow = parseInt(activeElement.getAttribute('data-row') || '0', 10);
     const currentCol = parseInt(activeElement.getAttribute('data-col') || '0', 10);
-    
+
     let nextRow = currentRow;
     let nextCol = currentCol;
 
@@ -386,18 +386,18 @@ const App: React.FC = () => {
       // Find the element with this row/col. 
       // Changed from 'button[data-row...]' to generic '[data-row...]' to include empty tiles (divs)
       const nextTile = document.querySelector(`[data-row="${nextRow}"][data-col="${nextCol}"]`) as HTMLElement;
-      
+
       if (nextTile) {
         nextTile.focus();
         // If it's the empty tile (checked via aria-label or just behavior), speak it
         if (nextTile.getAttribute('aria-label') === 'Espaço vazio') {
-           speak("Espaço vazio");
+          speak("Espaço vazio");
         }
-      } 
+      }
     }
   };
 
-  const containerClass = highContrast 
+  const containerClass = highContrast
     ? "min-h-screen bg-black text-yellow-400 font-sans transition-colors"
     : "min-h-screen bg-slate-50 text-slate-900 font-sans transition-colors";
 
@@ -411,7 +411,7 @@ const App: React.FC = () => {
   return (
     <main className={containerClass}>
       <div className="max-w-4xl mx-auto px-4 py-8 pb-20">
-        
+
         <AchievementNotification />
 
         <header className="mb-8 text-center">
@@ -419,24 +419,23 @@ const App: React.FC = () => {
           <p className="text-lg opacity-80" tabIndex={0}>Monte a imagem movendo as peças.</p>
         </header>
 
-        <AccessibilityPanel />
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
-          
+
           {/* Game Board Area */}
           <div className="flex flex-col items-center">
-            
+
             {/* Target Image - Placed above grid for better visibility */}
             <div className={`mb-6 p-3 rounded-xl flex items-center gap-4 ${highContrast ? 'bg-gray-900 border border-yellow-400' : 'bg-white shadow-sm border border-gray-100'}`}>
-               <span className="font-bold text-sm uppercase tracking-wide">Meta:</span>
-               <img 
-                 src={imageUrl} 
-                 alt="Imagem de referência: Como o quebra-cabeça deve ficar" 
-                 className="w-40 h-40 object-cover rounded border border-gray-300" 
-               />
+              <span className="font-bold text-sm uppercase tracking-wide">Meta:</span>
+              <img
+                src={imageUrl}
+                alt="Imagem de referência: Como o quebra-cabeça deve ficar"
+                className="w-40 h-40 object-cover rounded border border-gray-300"
+              />
             </div>
 
-            <div 
+            <div
               className={`
                 relative w-full max-w-[500px] aspect-square rounded-xl overflow-hidden shadow-2xl border-4 transition-colors 
                 ${highContrast ? 'bg-gray-900 border-yellow-400' : 'bg-gray-200 border-transparent focus-within:border-blue-500'}
@@ -447,24 +446,24 @@ const App: React.FC = () => {
               onKeyDown={handleKeyDown}
             >
               {sortedTiles.map((tile) => (
-                 <Tile 
-                   key={tile.id}
-                   tile={tile}
-                   gridSize={gridSize}
-                   imageUrl={imageUrl}
-                   onClick={handleTileClick}
-                   disabled={isSolved}
-                   isError={tile.id === errorTileId}
-                 />
+                <Tile
+                  key={tile.id}
+                  tile={tile}
+                  gridSize={gridSize}
+                  imageUrl={imageUrl}
+                  onClick={handleTileClick}
+                  disabled={isSolved}
+                  isError={tile.id === errorTileId}
+                />
               ))}
-              
+
               {isSolved && (
                 <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/80 backdrop-blur-sm p-6 text-center animate-fade-in">
                   <div>
                     <h2 className="text-3xl font-bold text-white mb-2">Vitória!</h2>
                     <p className="text-lg font-bold text-green-400 mb-4">+{pointsEarned} Pontos</p>
                     <p className="text-xl text-yellow-300 mb-6">{congratsMessage}</p>
-                    <button 
+                    <button
                       onClick={resetGame}
                       className="bg-white text-black px-6 py-3 rounded-full font-bold hover:scale-105 transition-transform"
                       autoFocus
@@ -475,16 +474,16 @@ const App: React.FC = () => {
                 </div>
               )}
             </div>
-            
+
             <p className="sr-only">
-               Use as teclas de seta para mover o foco entre as peças. Pressione Enter ou Espaço para mover a peça selecionada para o espaço vazio.
+              Use as teclas de seta para mover o foco entre as peças. Pressione Enter ou Espaço para mover a peça selecionada para o espaço vazio.
             </p>
 
           </div>
 
           {/* Sidebar Controls */}
           <div className="space-y-6">
-            <Controls 
+            <Controls
               gridSize={gridSize}
               setGridSize={setGridSize}
               onReset={resetGame}
@@ -495,6 +494,8 @@ const App: React.FC = () => {
           </div>
 
         </div>
+
+        <AccessibilityPanel />
 
       </div>
     </main>
